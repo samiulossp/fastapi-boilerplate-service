@@ -1,6 +1,7 @@
 from fastapi import FastAPI
 import uvicorn
 from app.core.database import Base, engine
+from app.models.refresh_token import RefreshToken
 from app.routers.auth import router as auth_router
 from app.routers.users import router as users_router
 
