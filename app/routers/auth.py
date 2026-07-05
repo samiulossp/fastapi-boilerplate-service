@@ -20,10 +20,18 @@ from app.services.auth_service import (
 
 router = APIRouter(prefix="/auth", tags=["auth"])
 
+@router.post("/register", response_model=UserResponse, status_code=201)
+def register(user_data: UserCreate, db: Session = Depends(get_db)):
+    return create_user(db, user_data)
+
+@router.post("/login", response_model=TokenResponse)
+def login(credentials: UserSignIn, db: Session = Depends(get_db)):
+    user = authenticate_user(db, credentials)
+    return generate_token(db, user)
+
 @router.post("/signup", response_model=UserResponse, status_code=201)
 def signup(user_data: UserCreate, db: Session = Depends(get_db)):
-    user = create_user(db, user_data)
-    return user
+    return create_user(db, user_data)
 
 @router.post("/signin", response_model=TokenResponse)
 def signin(credentials: UserSignIn, db: Session = Depends(get_db)):
